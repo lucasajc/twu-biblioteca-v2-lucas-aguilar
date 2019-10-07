@@ -2,7 +2,7 @@ package com.twu.biblioteca.domain;
 
 import java.util.UUID;
 
-public class Book {
+public class Book implements LibraryItem {
     private UUID id;
     private String author;
     private String title;
@@ -14,6 +14,16 @@ public class Book {
         this.author = author;
         this.title = title;
         this.year = year;
+    }
+
+    @Override
+    public void checkout() {
+        this.checkedOut = true;
+    }
+
+    @Override
+    public void deliver() {
+        this.checkedOut = false;
     }
 
     public UUID getId() {
@@ -34,9 +44,5 @@ public class Book {
 
     public boolean isCheckedOut() {
         return checkedOut;
-    }
-
-    public void setCheckedOut(boolean checkedOut) {
-        this.checkedOut = checkedOut;
     }
 }
