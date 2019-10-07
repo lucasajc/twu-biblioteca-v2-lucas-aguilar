@@ -58,6 +58,17 @@ public class LibraryTest {
     }
 
     @Test
+    public void shouldListEntireMovieCollection() {
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        library.listMovies();
+
+        assertThat(outContent.toString(), containsString("Interstellar"));
+        assertThat(outContent.toString(), containsString("The Empire Strikes Back"));
+    }
+
+    @Test
     public void shouldListABookAuthor() {
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
