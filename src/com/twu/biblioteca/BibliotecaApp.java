@@ -26,6 +26,7 @@ public class BibliotecaApp {
     private static Menu initializeMenu() {
         ArrayList<MenuOption> options = new ArrayList<MenuOption>();
         options.add(MenuOption.LIST_BOOKS);
+        options.add(MenuOption.LIST_MOVIES);
         options.add(MenuOption.CHECKOUT_BOOK);
         options.add(MenuOption.RETURN_BOOK);
         options.add(MenuOption.EXIT_APPLICATION);
@@ -44,7 +45,7 @@ public class BibliotecaApp {
         System.out.print("> Insert a book ID to checkout it: ");
         String userInput = scanner.nextLine();
 
-        checkoutBookById(userInput);
+        checkoutItemById(userInput);
     }
 
     private static void startBookReturn() {
@@ -53,7 +54,7 @@ public class BibliotecaApp {
         System.out.print("> Insert a book ID to return it: ");
         String userInput = scanner.nextLine();
 
-        returnBookById(userInput);
+        returnItemById(userInput);
     }
 
     private static void exitApplication() {
@@ -81,17 +82,17 @@ public class BibliotecaApp {
         menu.selectMenuOption(userInput);
     }
 
-    static void checkoutBookById(String userInput) {
+    static void checkoutItemById(String userInput) {
         try {
-            library.checkoutBookById(UUID.fromString(userInput));
+            library.checkoutItemById(UUID.fromString(userInput));
         } catch (IllegalArgumentException e) {
             System.out.println("\n" + INVALID_CHECKOUT_MESSAGE);
         }
     }
 
-    static void returnBookById(String userInput) {
+    static void returnItemById(String userInput) {
         try {
-            library.returnBookById(UUID.fromString(userInput));
+            library.returnItemById(UUID.fromString(userInput));
         } catch (IllegalArgumentException e) {
             System.out.println("\n" + INVALID_CHECKOUT_MESSAGE);
         }
