@@ -34,4 +34,18 @@ public class BookTest {
     public void shouldHaveAYear() {
         assertThat(book.getYear(), is(1954));
     }
+
+    @Test
+    public void shouldChangeCheckoutStatusToTrueWhenCheckout() {
+        book.checkout();
+
+        assertThat(book.isCheckedOut(), is(true));
+    }
+
+    @Test
+    public void shouldChangeCheckoutStatusToFalseWhenDeliver() {
+        book.deliver();
+
+        assertThat(book.isCheckedOut(), is(false));
+    }
 }

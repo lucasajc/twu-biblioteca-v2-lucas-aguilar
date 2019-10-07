@@ -15,7 +15,7 @@ import static org.junit.Assert.assertThat;
 public class LibraryTest {
 
     private Library library;
-    private ArrayList<Book> bookList = new ArrayList<Book>();
+    private ArrayList<LibraryItem> libraryItemList;
 
     private static final String SUCCESS_CHECKOUT_MESSAGE = "Thank you! Enjoy the book.";
     private static final String UN_SUCCESS_CHECKOUT_MESSAGE = "Sorry, that book is not available.";
@@ -24,22 +24,26 @@ public class LibraryTest {
 
     @Before
     public void setUp() {
-        bookList = new ArrayList<Book>();
-        bookList.add(new Book("J. R. R. Tolkien", "The Lord of the Rings", 1954));
-        bookList.add(new Book("J. R. R. Tolkien", "The Hobbit", 1937));
-        library = new Library(bookList);
+        libraryItemList = new ArrayList<LibraryItem>();
+
+        libraryItemList.add(new Book("J. R. R. Tolkien", "The Lord of the Rings", 1954));
+        libraryItemList.add(new Book("J. R. R. Tolkien", "The Hobbit", 1937));
+        libraryItemList.add(new Movie("Interstellar", 2014, "Christopher Nolan", 8.6));
+        libraryItemList.add(new Movie("The Empire Strikes Back", 1980, "Irvin Kershner", 8.7));
+
+        library = new Library(libraryItemList);
     }
 
     @Test
-    public void shouldCreateACollectionFromAListOfBooks() {
-        assertThat(library.getBooks().size(), is(2));
+    public void shouldCreateACollectionFromAListOfItems() {
+        assertThat(library.getItems().size(), is(4));
     }
 
     @Test
-    public void shouldCreateADefaultCollectionOfBooks() {
+    public void shouldCreateADefaultCollectionOfLibraryItems() {
         Library defaultLibrary = new Library();
 
-        assertThat(defaultLibrary.getBooks().size(), is(13));
+        assertThat(defaultLibrary.getItems().size(), is(15));
     }
 
     @Test
@@ -74,96 +78,96 @@ public class LibraryTest {
     }
 
     @Test
-    public void shouldChecksIfABookExistsById() {
-        HashMap.Entry<UUID, Book> entry = library.getBooks().entrySet().iterator().next();
+    public void shouldChecksIfAnItemExistsById() {
+        HashMap.Entry<UUID, LibraryItem> entry = library.getItems().entrySet().iterator().next();
         UUID key = entry.getKey();
 
-        assertThat(library.isBookExists(key), is(true));
+        assertThat(library.isItemExists(key), is(true));
     }
 
     @Test
-    public void shouldChecksIfABookDoesNotExistsById() {
-        assertThat(library.isBookExists(UUID.randomUUID()), is(false));
+    public void shouldChecksIfAnItemDoesNotExistsById() {
+        assertThat(library.isItemExists(UUID.randomUUID()), is(false));
     }
 
     @Test
-    public void shouldCheckoutABook() {
-        HashMap.Entry<UUID, Book> entry = library.getBooks().entrySet().iterator().next();
+    public void shouldCheckoutAnItem() {
+        HashMap.Entry<UUID, LibraryItem> entry = library.getItems().entrySet().iterator().next();
         UUID key = entry.getKey();
 
-        library.checkoutBookById(key);
+        library.checkoutItemById(key);
 
-        assertThat(library.getBooks().get(key).isCheckedOut(), is(true));
+        assertThat(library.getItems().get(key).isCheckedOut(), is(true));
     }
 
     @Test
-    public void shouldNotListACheckedOutBook() {
+    public void shouldNotListACheckedOutItem() {
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
-        HashMap.Entry<UUID, Book> entry = library.getBooks().entrySet().iterator().next();
+        HashMap.Entry<UUID, LibraryItem> entry = library.getItems().entrySet().iterator().next();
         UUID key = entry.getKey();
 
-        library.checkoutBookById(key);
+        library.checkoutItemById(key);
         library.listBooks();
 
         assertThat(outContent.toString(), not(containsString(key.toString())));
     }
 
     @Test
-    public void shouldPrintASuccessMessageOnCheckoutABook() {
+    public void shouldPrintASuccessMessageOnCheckoutAnItem() {
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
-        HashMap.Entry<UUID, Book> entry = library.getBooks().entrySet().iterator().next();
+        HashMap.Entry<UUID, LibraryItem> entry = library.getItems().entrySet().iterator().next();
         UUID key = entry.getKey();
 
-        library.checkoutBookById(key);
+        library.checkoutItemById(key);
 
         assertThat(outContent.toString(), containsString(SUCCESS_CHECKOUT_MESSAGE));
     }
 
     @Test
-    public void shouldPrintAUnSuccessfulMessageWhenCheckoutNonExistentBook() {
+    public void shouldPrintAUnSuccessfulMessageWhenCheckoutNonExistentItem() {
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
-        library.checkoutBookById(UUID.randomUUID());
+        library.checkoutItemById(UUID.randomUUID());
 
         assertThat(outContent.toString(), containsString(UN_SUCCESS_CHECKOUT_MESSAGE));
     }
 
     @Test
-    public void shouldReturnABook() {
-        HashMap.Entry<UUID, Book> entry = library.getBooks().entrySet().iterator().next();
+    public void shouldReturnAnItem() {
+        HashMap.Entry<UUID, LibraryItem> entry = library.getItems().entrySet().iterator().next();
         UUID key = entry.getKey();
 
-        library.checkoutBookById(key);
-        library.returnBookById(key);
+        library.checkoutItemById(key);
+        library.returnItemById(key);
 
-        assertThat(library.getBooks().get(key).isCheckedOut(), is(false));
+        assertThat(library.getItems().get(key).isCheckedOut(), is(false));
     }
 
     @Test
-    public void shouldPrintASuccessMessageOnReturnABook() {
+    public void shouldPrintASuccessMessageOnReturnAnItem() {
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
-        HashMap.Entry<UUID, Book> entry = library.getBooks().entrySet().iterator().next();
+        HashMap.Entry<UUID, LibraryItem> entry = library.getItems().entrySet().iterator().next();
         UUID key = entry.getKey();
 
-        library.checkoutBookById(key);
-        library.returnBookById(key);
+        library.checkoutItemById(key);
+        library.returnItemById(key);
 
         assertThat(outContent.toString(), containsString(SUCCESS_RETURN_MESSAGE));
     }
 
     @Test
-    public void shouldPrintAUnSuccessfulMessageWhenReturnNonExistentBook() {
+    public void shouldPrintAUnSuccessfulMessageWhenReturnNonExistentItem() {
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
-        library.returnBookById(UUID.randomUUID());
+        library.returnItemById(UUID.randomUUID());
 
         assertThat(outContent.toString(), containsString(UN_SUCCESS_RETURN_MESSAGE));
     }

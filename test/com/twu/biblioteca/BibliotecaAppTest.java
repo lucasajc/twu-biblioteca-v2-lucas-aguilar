@@ -1,7 +1,9 @@
 package com.twu.biblioteca;
 
 import com.twu.biblioteca.domain.Book;
+import com.twu.biblioteca.domain.LibraryItem;
 import com.twu.biblioteca.domain.Library;
+import com.twu.biblioteca.domain.Movie;
 import com.twu.biblioteca.menu.Menu;
 import com.twu.biblioteca.menu.MenuOption;
 import org.junit.Before;
@@ -19,7 +21,7 @@ public class BibliotecaAppTest {
 
     private Menu menu;
     private Library library;
-    private ArrayList<Book> bookList = new ArrayList<Book>();
+    private ArrayList<LibraryItem> libraryItemList;
 
     private static final String WELCOME_MESSAGE = "Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore.\n";
     private static final String INVALID_CHECKOUT_MESSAGE = "Please select a valid ID!";
@@ -32,10 +34,14 @@ public class BibliotecaAppTest {
     }
 
     private void initializeLibrary() {
-        bookList = new ArrayList<Book>();
-        bookList.add(new Book("J. R. R. Tolkien", "The Lord of the Rings", 1954));
-        bookList.add(new Book("J. R. R. Tolkien", "The Hobbit", 1937));
-        library = new Library(bookList);
+        libraryItemList = new ArrayList<LibraryItem>();
+
+        libraryItemList.add(new Book("J. R. R. Tolkien", "The Lord of the Rings", 1954));
+        libraryItemList.add(new Book("J. R. R. Tolkien", "The Hobbit", 1937));
+        libraryItemList.add(new Movie("Interstellar", 2014, "Christopher Nolan", 8.6));
+        libraryItemList.add(new Movie("The Empire Strikes Back", 1980, "Irvin Kershner", 8.7));
+
+        library = new Library(libraryItemList);
     }
 
     @Before
@@ -75,7 +81,7 @@ public class BibliotecaAppTest {
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
-        BibliotecaApp.checkoutBookById("abc");
+        BibliotecaApp.checkoutItemById("abc");
 
         assertThat(outContent.toString(), containsString(INVALID_CHECKOUT_MESSAGE));
     }
@@ -85,7 +91,7 @@ public class BibliotecaAppTest {
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
-        BibliotecaApp.returnBookById("abc");
+        BibliotecaApp.returnItemById("abc");
 
         assertThat(outContent.toString(), containsString(INVALID_CHECKOUT_MESSAGE));
     }
