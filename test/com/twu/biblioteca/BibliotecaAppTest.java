@@ -77,6 +77,19 @@ public class BibliotecaAppTest {
     }
 
     @Test
+    public void shouldListMoviesWhenUserChoosesItOnMenu() {
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        BibliotecaApp.selectMenuOption("2");
+        BibliotecaApp.processUserInput();
+
+
+        assertThat(outContent.toString(), containsString("Interstellar"));
+        assertThat(outContent.toString(), containsString("The Empire Strikes Back"));
+    }
+
+    @Test
     public void shouldPrintAnUnsuccessfulMessageWhenCheckoutInputIsInvalid() {
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
