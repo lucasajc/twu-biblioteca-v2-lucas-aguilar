@@ -2,6 +2,7 @@ package com.twu.biblioteca.menu;
 
 public enum MenuOption {
     LIST_BOOKS(MenuConstants.LIST_BOOKS_KEY,"List of books"),
+    LIST_MOVIES(MenuConstants.LIST_MOVIES_KEY, "List of movies"),
     CHECKOUT_BOOK(MenuConstants.CHECKOUT_BOOK_KEY, "Checkout a book"),
     RETURN_BOOK(MenuConstants.RETURN_BOOK_KEY, "Return a book"),
     EXIT_APPLICATION(MenuConstants.EXIT_APPLICATION_KEY, "Exit application");
