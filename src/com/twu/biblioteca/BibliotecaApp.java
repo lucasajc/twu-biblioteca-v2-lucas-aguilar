@@ -39,6 +39,10 @@ public class BibliotecaApp {
         library.listBooks();
     }
 
+    private static void listMovies() {
+        library.listMovies();
+    }
+
     private static void startBookCheckout() {
         Scanner scanner = new Scanner(System.in);
 
@@ -102,6 +106,9 @@ public class BibliotecaApp {
         switch(menu.getSelectedOption()) {
             case MenuConstants.LIST_BOOKS_KEY:
                 listBooks();
+                break;
+            case MenuConstants.LIST_MOVIES_KEY:
+                listMovies();
                 break;
             case MenuConstants.CHECKOUT_BOOK_KEY:
                 startBookCheckout();
