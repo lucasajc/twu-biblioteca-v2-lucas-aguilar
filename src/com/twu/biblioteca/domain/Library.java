@@ -63,6 +63,20 @@ public class Library {
         }
     }
 
+    public void listMovies() {
+        System.out.println("\nList of movies:\n");
+        System.out.format(LIST_MOVIES_FORMAT, LIST_MOVIES_HEADER);
+
+        for(Movie movie : getAvailableMovies()) {
+            System.out.format(LIST_MOVIES_FORMAT,
+                    movie.getId(),
+                    movie.getName(),
+                    movie.getYear(),
+                    movie.getDirector(),
+                    movie.getRating());
+        }
+    }
+
     boolean isItemExists(UUID id) {
         return items.get(id) != null;
     }
@@ -89,6 +103,14 @@ public class Library {
         return (ArrayList<Book>) items.values().stream()
                 .filter(item -> item instanceof Book)
                 .map(item -> (Book) item)
+                .filter(item -> !item.isCheckedOut())
+                .collect(Collectors.toList());
+    }
+
+    private ArrayList<Movie> getAvailableMovies() {
+        return (ArrayList<Movie>) items.values().stream()
+                .filter(item -> item instanceof Movie)
+                .map(item -> (Movie) item)
                 .filter(item -> !item.isCheckedOut())
                 .collect(Collectors.toList());
     }
