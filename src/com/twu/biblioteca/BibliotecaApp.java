@@ -49,7 +49,7 @@ public class BibliotecaApp {
         System.out.print("> Insert a book ID to checkout it: ");
         String userInput = scanner.nextLine();
 
-        checkoutItemById(userInput);
+        checkoutBookById(userInput);
     }
 
     private static void startBookReturn() {
@@ -58,7 +58,7 @@ public class BibliotecaApp {
         System.out.print("> Insert a book ID to return it: ");
         String userInput = scanner.nextLine();
 
-        returnItemById(userInput);
+        returnBookById(userInput);
     }
 
     private static void exitApplication() {
@@ -86,17 +86,33 @@ public class BibliotecaApp {
         menu.selectMenuOption(userInput);
     }
 
-    static void checkoutItemById(String userInput) {
+    static void checkoutBookById(String userInput) {
         try {
-            library.checkoutItemById(UUID.fromString(userInput));
+            library.checkoutBookById(UUID.fromString(userInput));
         } catch (IllegalArgumentException e) {
             System.out.println("\n" + INVALID_CHECKOUT_MESSAGE);
         }
     }
 
-    static void returnItemById(String userInput) {
+    static void checkoutMovieById(String userInput) {
         try {
-            library.returnItemById(UUID.fromString(userInput));
+            library.checkoutMovieById(UUID.fromString(userInput));
+        } catch (IllegalArgumentException e) {
+            System.out.println("\n" + INVALID_CHECKOUT_MESSAGE);
+        }
+    }
+
+    static void returnBookById(String userInput) {
+        try {
+            library.returnBookById(UUID.fromString(userInput));
+        } catch (IllegalArgumentException e) {
+            System.out.println("\n" + INVALID_CHECKOUT_MESSAGE);
+        }
+    }
+
+    static void returnMovieById(String userInput) {
+        try {
+            library.returnMovieById(UUID.fromString(userInput));
         } catch (IllegalArgumentException e) {
             System.out.println("\n" + INVALID_CHECKOUT_MESSAGE);
         }

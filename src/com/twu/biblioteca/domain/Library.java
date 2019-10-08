@@ -2,6 +2,7 @@ package com.twu.biblioteca.domain;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -11,10 +12,6 @@ public class Library {
     private static final String LIST_MOVIES_FORMAT = "%-25s%25s%25s%25s%25s%n";
     private static final String[] LIST_BOOKS_HEADER = new String[] { "Id", "Author", "Title", "Year published" };
     private static final String[] LIST_MOVIES_HEADER = new String[] { "Id", "Name", "Year", "Director", "Rating" };
-    private static final String SUCCESS_CHECKOUT_MESSAGE = "\nThank you! Enjoy the book.";
-    private static final String UN_SUCCESS_CHECKOUT_MESSAGE = "Sorry, that book is not available.";
-    private static final String SUCCESS_RETURN_MESSAGE = "Thank you for returning the book.";
-    private static final String UN_SUCCESS_RETURN_MESSAGE = "This is not a valid book to return.";
 
     public Library(ArrayList<LibraryItem> libraryItemList) {
         fillLibraryCollection(libraryItemList);
@@ -77,42 +74,96 @@ public class Library {
         }
     }
 
+    public void checkoutBookById(UUID id) {
+        if(isCheckoutValid(id)) {
+            printUnSuccessCheckoutMessage(LibraryItemTypes.BOOK);
+            return;
+        }
+        items.get(id).checkout();
+        printSuccessCheckoutMessage(LibraryItemTypes.BOOK);
+    }
+
+    public void checkoutMovieById(UUID id) {
+        if(isCheckoutValid(id)) {
+            printUnSuccessCheckoutMessage(LibraryItemTypes.MOVIE);
+            return;
+        }
+        items.get(id).checkout();
+        printSuccessCheckoutMessage(LibraryItemTypes.MOVIE);
+    }
+
+    public void returnBookById(UUID id) {
+        if(isReturnValid(id)) {
+            printUnSuccessReturnMessage(LibraryItemTypes.BOOK);
+            return;
+        }
+        items.get(id).deliver();
+        printSuccessReturnMessage(LibraryItemTypes.BOOK);
+    }
+
+    public void returnMovieById(UUID id) {
+        if(isReturnValid(id)) {
+            printUnSuccessReturnMessage(LibraryItemTypes.MOVIE);
+            return;
+        }
+        items.get(id).deliver();
+        printSuccessReturnMessage(LibraryItemTypes.MOVIE);
+    }
+
+    Map<UUID, Book> getBooks() {
+        return items.values().stream()
+                .filter(item -> item instanceof Book)
+                .map(item -> (Book) item)
+                .collect(Collectors.toMap(item -> ((Book) item).getId(), item -> ((Book) item)));
+    }
+
+    Map<UUID, Movie> getMovies() {
+        return items.values().stream()
+                .filter(item -> item instanceof Movie)
+                .map(item -> (Movie) item)
+                .collect(Collectors.toMap(item -> ((Movie) item).getId(), item -> ((Movie) item)));
+    }
+
     boolean isItemExists(UUID id) {
         return items.get(id) != null;
     }
 
-    public void checkoutItemById(UUID id) {
-        if(!isItemExists(id) || items.get(id).isCheckedOut()) {
-            System.out.println(UN_SUCCESS_CHECKOUT_MESSAGE);
-            return;
-        }
-        items.get(id).checkout();
-        System.out.println(SUCCESS_CHECKOUT_MESSAGE);
+    private boolean isCheckoutValid(UUID id) {
+        return !isItemExists(id) || items.get(id).isCheckedOut();
     }
 
-    public void returnItemById(UUID id) {
-        if(!isItemExists(id) || !items.get(id).isCheckedOut()) {
-            System.out.println(UN_SUCCESS_RETURN_MESSAGE);
-            return;
-        }
-        items.get(id).deliver();
-        System.out.println(SUCCESS_RETURN_MESSAGE);
+    private boolean isReturnValid(UUID id) {
+        return !isItemExists(id) || !items.get(id).isCheckedOut();
     }
 
     private ArrayList<Book> getAvailableBooks() {
-        return (ArrayList<Book>) items.values().stream()
-                .filter(item -> item instanceof Book)
+        return (ArrayList<Book>) getBooks().values().stream()
                 .map(item -> (Book) item)
                 .filter(item -> !item.isCheckedOut())
                 .collect(Collectors.toList());
     }
 
     private ArrayList<Movie> getAvailableMovies() {
-        return (ArrayList<Movie>) items.values().stream()
-                .filter(item -> item instanceof Movie)
+        return (ArrayList<Movie>) getMovies().values().stream()
                 .map(item -> (Movie) item)
                 .filter(item -> !item.isCheckedOut())
                 .collect(Collectors.toList());
+    }
+
+    private void printSuccessCheckoutMessage(String itemType) {
+        System.out.println("\nThank you! Enjoy the "+ itemType + ".");
+    }
+
+    private void printUnSuccessCheckoutMessage(String itemType) {
+        System.out.println("Sorry, that "+ itemType +" is not available.");
+    }
+
+    private void printSuccessReturnMessage(String itemType) {
+        System.out.println("Thank you for returning the "+ itemType +".");
+    }
+
+    private void printUnSuccessReturnMessage(String itemType) {
+        System.out.println("This is not a valid "+ itemType +" to return.");
     }
 
     public HashMap<UUID, LibraryItem> getItems() {
