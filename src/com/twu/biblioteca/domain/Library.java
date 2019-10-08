@@ -75,7 +75,7 @@ public class Library {
     }
 
     public void checkoutBookById(UUID id) {
-        if(isCheckoutValid(id)) {
+        if(isCheckoutValid(id, LibraryItemTypes.BOOK)) {
             printUnSuccessCheckoutMessage(LibraryItemTypes.BOOK);
             return;
         }
@@ -84,7 +84,7 @@ public class Library {
     }
 
     public void checkoutMovieById(UUID id) {
-        if(isCheckoutValid(id)) {
+        if(isCheckoutValid(id, LibraryItemTypes.MOVIE)) {
             printUnSuccessCheckoutMessage(LibraryItemTypes.MOVIE);
             return;
         }
@@ -93,7 +93,7 @@ public class Library {
     }
 
     public void returnBookById(UUID id) {
-        if(isReturnValid(id)) {
+        if(isReturnValid(id, LibraryItemTypes.BOOK)) {
             printUnSuccessReturnMessage(LibraryItemTypes.BOOK);
             return;
         }
@@ -102,7 +102,7 @@ public class Library {
     }
 
     public void returnMovieById(UUID id) {
-        if(isReturnValid(id)) {
+        if(isReturnValid(id, LibraryItemTypes.MOVIE)) {
             printUnSuccessReturnMessage(LibraryItemTypes.MOVIE);
             return;
         }
@@ -128,12 +128,12 @@ public class Library {
         return items.get(id) != null;
     }
 
-    private boolean isCheckoutValid(UUID id) {
-        return !isItemExists(id) || items.get(id).isCheckedOut();
+    private boolean isCheckoutValid(UUID id, String itemType) {
+        return !isItemExists(id) || items.get(id).isCheckedOut() || !items.get(id).getType().equals(itemType);
     }
 
-    private boolean isReturnValid(UUID id) {
-        return !isItemExists(id) || !items.get(id).isCheckedOut();
+    private boolean isReturnValid(UUID id, String itemType) {
+        return !isItemExists(id) || !items.get(id).isCheckedOut() || !items.get(id).getType().equals(itemType);
     }
 
     private ArrayList<Book> getAvailableBooks() {

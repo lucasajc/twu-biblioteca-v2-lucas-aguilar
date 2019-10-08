@@ -269,4 +269,46 @@ public class LibraryTest {
 
         assertThat(outContent.toString(), containsString(MOVIE_UN_SUCCESS_RETURN_MESSAGE));
     }
+
+    @Test
+    public void shouldNotCheckoutAMovieOnCallBookCheckout() {
+        HashMap.Entry<UUID, Movie> entry = library.getMovies().entrySet().iterator().next();
+        UUID key = entry.getKey();
+
+        library.checkoutBookById(key);
+
+        assertThat(library.getItems().get(key).isCheckedOut(), is(false));
+    }
+
+    @Test
+    public void shouldNotCheckoutABookOnCallMovieCheckout() {
+        HashMap.Entry<UUID, Book> entry = library.getBooks().entrySet().iterator().next();
+        UUID key = entry.getKey();
+
+        library.checkoutMovieById(key);
+
+        assertThat(library.getItems().get(key).isCheckedOut(), is(false));
+    }
+
+    @Test
+    public void shouldNotReturnAMovieOnCallBookReturn() {
+        HashMap.Entry<UUID, Movie> entry = library.getMovies().entrySet().iterator().next();
+        UUID key = entry.getKey();
+
+        library.checkoutMovieById(key);
+        library.checkoutBookById(key);
+
+        assertThat(library.getItems().get(key).isCheckedOut(), is(true));
+    }
+
+    @Test
+    public void shouldNotReturnABookOnCallMovieReturn() {
+        HashMap.Entry<UUID, Book> entry = library.getBooks().entrySet().iterator().next();
+        UUID key = entry.getKey();
+
+        library.checkoutBookById(key);
+        library.returnMovieById(key);
+
+        assertThat(library.getItems().get(key).isCheckedOut(), is(true));
+    }
 }
