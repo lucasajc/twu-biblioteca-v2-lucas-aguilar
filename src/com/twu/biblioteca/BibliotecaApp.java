@@ -3,6 +3,7 @@ package com.twu.biblioteca;
 import com.twu.biblioteca.domain.Library;
 import com.twu.biblioteca.domain.LibraryItem;
 import com.twu.biblioteca.domain.LibraryItemTypes;
+import com.twu.biblioteca.domain.Printer;
 import com.twu.biblioteca.menu.Menu;
 import com.twu.biblioteca.menu.MenuConstants;
 import com.twu.biblioteca.menu.MenuOption;
@@ -19,7 +20,7 @@ public class BibliotecaApp {
 
     public static void main(String[] args) {
         menu = initializeMenu();
-        library = new Library();
+        library = new Library(new Printer());
 
         printWelcomeMessage();
         run();

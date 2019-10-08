@@ -1,42 +1,46 @@
 package com.twu.biblioteca.domain;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Library {
     private HashMap<UUID, LibraryItem> items;
-    private static final String LIST_BOOKS_FORMAT = "%-25s%25s%25s%25s%n";
-    private static final String LIST_MOVIES_FORMAT = "%-25s%25s%25s%25s%25s%n";
-    private static final String[] LIST_BOOKS_HEADER = new String[] { "Id", "Author", "Title", "Year published" };
-    private static final String[] LIST_MOVIES_HEADER = new String[] { "Id", "Name", "Year", "Director", "Rating" };
+    private Printer printer;
 
-    public Library(ArrayList<LibraryItem> libraryItemList) {
-        fillLibraryCollection(libraryItemList);
-    }
-
-    public Library() {
+    public Library(Printer printer) {
         ArrayList<LibraryItem> libraryItemList = new ArrayList<LibraryItem>();
 
-        libraryItemList.add(new Book("J. R. R. Tolkien", "The Lord of the Rings", 1954));
-        libraryItemList.add(new Book("J. R. R. Tolkien", "The Hobbit", 1937));
-        libraryItemList.add(new Book("J. R. R. Tolkien", "The Silmarillion", 1977));
-        libraryItemList.add(new Book("J. R. R. Tolkien", "The Fall of Gondolin", 2018));
-        libraryItemList.add(new Book("Conn Iggulden", "Wolf of the Plains", 2007));
-        libraryItemList.add(new Book("Conn Iggulden", "Lords of the Bow", 2008));
-        libraryItemList.add(new Book("Conn Iggulden", "Bones of the Hills", 2008));
-        libraryItemList.add(new Book("Conn Iggulden", "Conqueror", 2011));
-        libraryItemList.add(new Book("George R. R. Martin", "A Game of Thrones", 1996));
-        libraryItemList.add(new Book("George R. R. Martin", "A Clash of Kings", 1999));
-        libraryItemList.add(new Book("George R. R. Martin", "A Storm of Swords", 2000));
-        libraryItemList.add(new Book("George R. R. Martin", "A Feast for Crows", 2005));
-        libraryItemList.add(new Book("George R. R. Martin", "A Dance with Dragons", 2011));
-        libraryItemList.add(new Movie("Interstellar", 2014, "Christopher Nolan", 8.6));
-        libraryItemList.add(new Movie("The Empire Strikes Back", 1980, "Irvin Kershner", 8.7));
+        libraryItemList.addAll(initLibraryBooks());
+        libraryItemList.addAll(initLibraryMovies());
 
         fillLibraryCollection(libraryItemList);
+
+        this.printer = printer;
+    }
+
+    private List<Book> initLibraryBooks() {
+       return Arrays.asList(
+            new Book("J. R. R. Tolkien", "The Lord of the Rings", 1954),
+            new Book("J. R. R. Tolkien", "The Hobbit", 1937),
+            new Book("J. R. R. Tolkien", "The Silmarillion", 1977),
+            new Book("J. R. R. Tolkien", "The Fall of Gondolin", 2018),
+            new Book("Conn Iggulden", "Wolf of the Plains", 2007),
+            new Book("Conn Iggulden", "Lords of the Bow", 2008),
+            new Book("Conn Iggulden", "Bones of the Hills", 2008),
+            new Book("Conn Iggulden", "Conqueror", 2011),
+            new Book("George R. R. Martin", "A Game of Thrones", 1996),
+            new Book("George R. R. Martin", "A Clash of Kings", 1999),
+            new Book("George R. R. Martin", "A Storm of Swords", 2000),
+            new Book("George R. R. Martin", "A Feast for Crows", 2005),
+            new Book("George R. R. Martin", "A Dance with Dragons", 2011)
+        );
+    }
+
+    private List<Movie> initLibraryMovies() {
+        return Arrays.asList(
+                new Movie("Interstellar", 2014, "Christopher Nolan", 8.6),
+                new Movie("The Empire Strikes Back", 1980, "Irvin Kershner", 8.7)
+        );
     }
 
     private void fillLibraryCollection(ArrayList<LibraryItem> libraryItemList) {
@@ -48,66 +52,47 @@ public class Library {
     }
 
     public void listBooks() {
-        System.out.println("\nList of books:\n");
-        System.out.format(LIST_BOOKS_FORMAT, LIST_BOOKS_HEADER);
-
-        for(Book book : getAvailableBooks()) {
-            System.out.format(LIST_BOOKS_FORMAT,
-                    book.getId(),
-                    book.getAuthor(),
-                    book.getTitle(),
-                    book.getYear());
-        }
+        printer.printBookList(getAvailableBooks());
     }
 
     public void listMovies() {
-        System.out.println("\nList of movies:\n");
-        System.out.format(LIST_MOVIES_FORMAT, LIST_MOVIES_HEADER);
-
-        for(Movie movie : getAvailableMovies()) {
-            System.out.format(LIST_MOVIES_FORMAT,
-                    movie.getId(),
-                    movie.getName(),
-                    movie.getYear(),
-                    movie.getDirector(),
-                    movie.getRating());
-        }
+        printer.printMovieList(getAvailableMovies());
     }
 
     public void checkoutBookById(UUID id) {
         if(isCheckoutValid(id, LibraryItemTypes.BOOK)) {
-            printUnSuccessCheckoutMessage(LibraryItemTypes.BOOK);
+            printer.printUnSuccessCheckoutMessage(LibraryItemTypes.BOOK);
             return;
         }
         items.get(id).checkout();
-        printSuccessCheckoutMessage(LibraryItemTypes.BOOK);
+        printer.printSuccessCheckoutMessage(LibraryItemTypes.BOOK);
     }
 
     public void checkoutMovieById(UUID id) {
         if(isCheckoutValid(id, LibraryItemTypes.MOVIE)) {
-            printUnSuccessCheckoutMessage(LibraryItemTypes.MOVIE);
+            printer.printUnSuccessCheckoutMessage(LibraryItemTypes.MOVIE);
             return;
         }
         items.get(id).checkout();
-        printSuccessCheckoutMessage(LibraryItemTypes.MOVIE);
+        printer.printSuccessCheckoutMessage(LibraryItemTypes.MOVIE);
     }
 
     public void returnBookById(UUID id) {
         if(isReturnValid(id, LibraryItemTypes.BOOK)) {
-            printUnSuccessReturnMessage(LibraryItemTypes.BOOK);
+            printer.printUnSuccessReturnMessage(LibraryItemTypes.BOOK);
             return;
         }
         items.get(id).deliver();
-        printSuccessReturnMessage(LibraryItemTypes.BOOK);
+        printer.printSuccessReturnMessage(LibraryItemTypes.BOOK);
     }
 
     public void returnMovieById(UUID id) {
         if(isReturnValid(id, LibraryItemTypes.MOVIE)) {
-            printUnSuccessReturnMessage(LibraryItemTypes.MOVIE);
+            printer.printUnSuccessReturnMessage(LibraryItemTypes.MOVIE);
             return;
         }
         items.get(id).deliver();
-        printSuccessReturnMessage(LibraryItemTypes.MOVIE);
+        printer.printSuccessReturnMessage(LibraryItemTypes.MOVIE);
     }
 
     Map<UUID, Book> getBooks() {
@@ -124,16 +109,16 @@ public class Library {
                 .collect(Collectors.toMap(item -> ((Movie) item).getId(), item -> ((Movie) item)));
     }
 
-    boolean isItemExists(UUID id) {
+    private boolean itemExists(UUID id) {
         return items.get(id) != null;
     }
 
     private boolean isCheckoutValid(UUID id, String itemType) {
-        return !isItemExists(id) || items.get(id).isCheckedOut() || !items.get(id).getType().equals(itemType);
+        return !itemExists(id) || items.get(id).isCheckedOut() || !items.get(id).getType().equals(itemType);
     }
 
     private boolean isReturnValid(UUID id, String itemType) {
-        return !isItemExists(id) || !items.get(id).isCheckedOut() || !items.get(id).getType().equals(itemType);
+        return !itemExists(id) || !items.get(id).isCheckedOut() || !items.get(id).getType().equals(itemType);
     }
 
     private ArrayList<Book> getAvailableBooks() {
@@ -148,22 +133,6 @@ public class Library {
                 .map(item -> (Movie) item)
                 .filter(item -> !item.isCheckedOut())
                 .collect(Collectors.toList());
-    }
-
-    private void printSuccessCheckoutMessage(String itemType) {
-        System.out.println("\nThank you! Enjoy the "+ itemType + ".");
-    }
-
-    private void printUnSuccessCheckoutMessage(String itemType) {
-        System.out.println("Sorry, that "+ itemType +" is not available.");
-    }
-
-    private void printSuccessReturnMessage(String itemType) {
-        System.out.println("Thank you for returning the "+ itemType +".");
-    }
-
-    private void printUnSuccessReturnMessage(String itemType) {
-        System.out.println("This is not a valid "+ itemType +" to return.");
     }
 
     public HashMap<UUID, LibraryItem> getItems() {
