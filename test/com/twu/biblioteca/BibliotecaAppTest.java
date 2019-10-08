@@ -90,21 +90,41 @@ public class BibliotecaAppTest {
     }
 
     @Test
-    public void shouldPrintAnUnsuccessfulMessageWhenCheckoutInputIsInvalid() {
+    public void shouldPrintAnUnsuccessfulMessageWhenCheckoutBookInputIsInvalid() {
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
-        BibliotecaApp.checkoutItemById("abc");
+        BibliotecaApp.checkoutBookById("abc");
 
         assertThat(outContent.toString(), containsString(INVALID_CHECKOUT_MESSAGE));
     }
 
     @Test
-    public void shouldPrintAnUnsuccessfulMessageWhenReturnInputIsInvalid() {
+    public void shouldPrintAnUnsuccessfulMessageWhenReturnBookInputIsInvalid() {
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
-        BibliotecaApp.returnItemById("abc");
+        BibliotecaApp.returnBookById("abc");
+
+        assertThat(outContent.toString(), containsString(INVALID_CHECKOUT_MESSAGE));
+    }
+
+    @Test
+    public void shouldPrintAnUnsuccessfulMessageWhenCheckoutMovieInputIsInvalid() {
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        BibliotecaApp.checkoutMovieById("abc");
+
+        assertThat(outContent.toString(), containsString(INVALID_CHECKOUT_MESSAGE));
+    }
+
+    @Test
+    public void shouldPrintAnUnsuccessfulMessageWhenReturnMovieInputIsInvalid() {
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        BibliotecaApp.returnMovieById("abc");
 
         assertThat(outContent.toString(), containsString(INVALID_CHECKOUT_MESSAGE));
     }
