@@ -1,6 +1,8 @@
 package com.twu.biblioteca;
 
 import com.twu.biblioteca.domain.Library;
+import com.twu.biblioteca.domain.LibraryItem;
+import com.twu.biblioteca.domain.LibraryItemTypes;
 import com.twu.biblioteca.menu.Menu;
 import com.twu.biblioteca.menu.MenuConstants;
 import com.twu.biblioteca.menu.MenuOption;
@@ -29,6 +31,8 @@ public class BibliotecaApp {
         options.add(MenuOption.LIST_MOVIES);
         options.add(MenuOption.CHECKOUT_BOOK);
         options.add(MenuOption.RETURN_BOOK);
+        options.add(MenuOption.CHECKOUT_MOVIE);
+        options.add(MenuOption.RETURN_MOVIE);
         options.add(MenuOption.EXIT_APPLICATION);
         Menu menu = new Menu(options);
 
@@ -43,22 +47,30 @@ public class BibliotecaApp {
         library.listMovies();
     }
 
-    private static void startBookCheckout() {
+    private static void startItemCheckout(String itemType) {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.print("> Insert a book ID to checkout it: ");
+        System.out.print("> Insert a "+ itemType +" ID to checkout it: ");
         String userInput = scanner.nextLine();
 
-        checkoutBookById(userInput);
+        if(itemType.equals(LibraryItemTypes.BOOK)) {
+            checkoutBookById(userInput);
+            return;
+        }
+        checkoutMovieById(userInput);
     }
 
-    private static void startBookReturn() {
+    private static void startItemReturn(String itemType) {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.print("> Insert a book ID to return it: ");
+        System.out.print("> Insert a "+ itemType +" ID to return it: ");
         String userInput = scanner.nextLine();
 
-        returnBookById(userInput);
+        if(itemType.equals(LibraryItemTypes.BOOK)) {
+            returnBookById(userInput);
+            return;
+        }
+        returnMovieById(userInput);
     }
 
     private static void exitApplication() {
@@ -127,10 +139,16 @@ public class BibliotecaApp {
                 listMovies();
                 break;
             case MenuConstants.CHECKOUT_BOOK_KEY:
-                startBookCheckout();
+                startItemCheckout(LibraryItemTypes.BOOK);
                 break;
             case MenuConstants.RETURN_BOOK_KEY:
-                startBookReturn();
+                startItemReturn(LibraryItemTypes.BOOK);
+                break;
+            case MenuConstants.CHECKOUT_MOVIE_KEY:
+                startItemCheckout(LibraryItemTypes.MOVIE);
+                break;
+            case MenuConstants.RETURN_MOVIE_KEY:
+                startItemReturn(LibraryItemTypes.MOVIE);
                 break;
             case MenuConstants.EXIT_APPLICATION_KEY:
                 exitApplication();
