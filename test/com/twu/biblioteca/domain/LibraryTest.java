@@ -2,19 +2,19 @@ package com.twu.biblioteca.domain;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 
 public class LibraryTest {
-
+    private User user;
     private Library library;
     private ArrayList<LibraryItem> libraryItemList;
 
@@ -29,26 +29,12 @@ public class LibraryTest {
 
     @Before
     public void setUp() {
-        libraryItemList = new ArrayList<LibraryItem>();
-
-        libraryItemList.add(new Book("J. R. R. Tolkien", "The Lord of the Rings", 1954));
-        libraryItemList.add(new Book("J. R. R. Tolkien", "The Hobbit", 1937));
-        libraryItemList.add(new Movie("Interstellar", 2014, "Christopher Nolan", 8.6));
-        libraryItemList.add(new Movie("The Empire Strikes Back", 1980, "Irvin Kershner", 8.7));
-
-        library = new Library(libraryItemList);
+        library = new Library(new Printer());
     }
 
     @Test
     public void shouldCreateACollectionFromAListOfItems() {
-        assertThat(library.getItems().size(), is(4));
-    }
-
-    @Test
-    public void shouldCreateADefaultCollectionOfLibraryItems() {
-        Library defaultLibrary = new Library();
-
-        assertThat(defaultLibrary.getItems().size(), is(15));
+        assertThat(library.getItems().size(), is(15));
     }
 
     @Test
@@ -91,19 +77,6 @@ public class LibraryTest {
         library.listBooks();
 
         assertThat(outContent.toString(), containsString(String.valueOf(1954)));
-    }
-
-    @Test
-    public void shouldChecksIfAnItemExistsById() {
-        HashMap.Entry<UUID, LibraryItem> entry = library.getItems().entrySet().iterator().next();
-        UUID key = entry.getKey();
-
-        assertThat(library.isItemExists(key), is(true));
-    }
-
-    @Test
-    public void shouldChecksIfAnItemDoesNotExistsById() {
-        assertThat(library.isItemExists(UUID.randomUUID()), is(false));
     }
 
     @Test
