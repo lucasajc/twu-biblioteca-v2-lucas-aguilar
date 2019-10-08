@@ -36,6 +36,11 @@ public class BookTest {
     }
 
     @Test
+    public void shouldHaveABookType() {
+        assertThat(book.getType(), is("book"));
+    }
+
+    @Test
     public void shouldChangeCheckoutStatusToTrueWhenCheckout() {
         book.checkout();
 

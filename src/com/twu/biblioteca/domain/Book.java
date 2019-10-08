@@ -8,12 +8,14 @@ public class Book implements LibraryItem {
     private String title;
     private int year;
     private boolean checkedOut;
+    private String type;
 
     public Book(String author, String title, int year) {
         this.id = UUID.randomUUID();
         this.author = author;
         this.title = title;
         this.year = year;
+        this.type = LibraryItemTypes.BOOK;
     }
 
     @Override
@@ -24,6 +26,11 @@ public class Book implements LibraryItem {
     @Override
     public void deliver() {
         this.checkedOut = false;
+    }
+
+    @Override
+    public String getType() {
+        return type;
     }
 
     public UUID getId() {

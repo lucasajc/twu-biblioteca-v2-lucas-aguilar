@@ -41,6 +41,11 @@ public class MovieTest {
     }
 
     @Test
+    public void shouldHaveAMovieType() {
+        assertThat(movie.getType(), is("movie"));
+    }
+
+    @Test
     public void shouldHaveAUnratedStatusWhenItIsNotInformed() {
         movie = new Movie("Interstellar", 2014, "Christopher Nolan");
 

@@ -9,6 +9,7 @@ public class Movie implements LibraryItem {
     private String director;
     private String rating;
     private boolean checkedOut;
+    private String type;
 
     public Movie(String name, int year, String director) {
         this.id = UUID.randomUUID();
@@ -17,6 +18,7 @@ public class Movie implements LibraryItem {
         this.director = director;
         this.checkedOut = false;
         this.rating = "unrated";
+        this.type = LibraryItemTypes.MOVIE;
     }
 
     public Movie(String name, int year, String director, double rating) {
@@ -25,6 +27,7 @@ public class Movie implements LibraryItem {
         this.year = year;
         this.director = director;
         this.checkedOut = false;
+        this.type = LibraryItemTypes.MOVIE;
         if(rating > 0 && rating <=10) {
             this.rating = String.valueOf(rating);
         } else {
@@ -40,6 +43,11 @@ public class Movie implements LibraryItem {
     @Override
     public void deliver() {
         this.checkedOut = false;
+    }
+
+    @Override
+    public String getType() {
+        return type;
     }
 
     public UUID getId() {
