@@ -94,7 +94,7 @@ public class Printer {
     }
 
     public void printLoginUsernameRequest() {
-        System.out.print("Username (e-mail): ");
+        System.out.print("Username (Library ID): ");
     }
 
     public void printLoginPasswordRequest() {

@@ -114,7 +114,7 @@ public class PrinterTest {
         printer.printLoginPasswordRequest();
 
         assertThat(outContent.toString(), containsString("Login"));
-        assertThat(outContent.toString(), containsString("Username (e-mail): "));
+        assertThat(outContent.toString(), containsString("Username (Library ID): "));
         assertThat(outContent.toString(), containsString("Password: "));
     }
 
