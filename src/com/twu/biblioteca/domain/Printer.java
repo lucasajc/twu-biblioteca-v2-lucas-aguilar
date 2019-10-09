@@ -1,10 +1,14 @@
 package com.twu.biblioteca.domain;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Printer {
     private static final String LIST_BOOKS_FORMAT = "%-25s%25s%25s%25s%n";
     private static final String LIST_MOVIES_FORMAT = "%-25s%25s%25s%25s%25s%n";
+    private static final String LIST_CHECKOUT_ITEMS_FORMAT = "%-30s%30s%25s%30s%30s%30s%n";
+    private static final String[] LIST_CHECKOUT_BOOKS_HEADER = new String[] { "Book ID", "Title", "User ID", "User name", "User e-mail", "User phone number" };
+    private static final String[] LIST_CHECKOUT_MOVIES_HEADER = new String[] { "Movie ID", "Name", "User ID", "User name", "User e-mail", "User phone number" };
     private static final String[] LIST_BOOKS_HEADER = new String[] { "Id", "Author", "Title", "Year published" };
     private static final String[] LIST_MOVIES_HEADER = new String[] { "Id", "Name", "Year", "Director", "Rating" };
 
@@ -49,5 +53,55 @@ public class Printer {
                     movie.getDirector(),
                     movie.getRating());
         }
+    }
+
+    public void printCheckedOutBooks(List<CheckoutItem> checkoutItems) {
+        System.out.println("\nList of checked out books:\n");
+        System.out.format(LIST_CHECKOUT_ITEMS_FORMAT, LIST_CHECKOUT_BOOKS_HEADER);
+
+        for(CheckoutItem checkoutItem : checkoutItems) {
+            Book book = (Book) checkoutItem.getLibraryItem();
+
+            System.out.format(LIST_CHECKOUT_ITEMS_FORMAT,
+                    checkoutItem.getLibraryItem().getId(),
+                    book.getTitle(),
+                    checkoutItem.getUser().getId(),
+                    checkoutItem.getUser().getName(),
+                    checkoutItem.getUser().getEmail(),
+                    checkoutItem.getUser().getPhoneNumber());
+        }
+    }
+
+    public void printCheckedOutMovies(List<CheckoutItem> checkoutItems) {
+        System.out.println("\nList of checked out movies:\n");
+        System.out.format(LIST_CHECKOUT_ITEMS_FORMAT, LIST_CHECKOUT_MOVIES_HEADER);
+
+        for(CheckoutItem checkoutItem : checkoutItems) {
+            Movie movie = (Movie) checkoutItem.getLibraryItem();
+
+            System.out.format(LIST_CHECKOUT_ITEMS_FORMAT,
+                    checkoutItem.getLibraryItem().getId(),
+                    movie.getName(),
+                    checkoutItem.getUser().getId(),
+                    checkoutItem.getUser().getName(),
+                    checkoutItem.getUser().getEmail(),
+                    checkoutItem.getUser().getPhoneNumber());
+        }
+    }
+
+    public void printLoginHeader() {
+        System.out.println("\n---------------- Login ----------------\n");
+    }
+
+    public void printLoginUsernameRequest() {
+        System.out.print("Username (e-mail): ");
+    }
+
+    public void printLoginPasswordRequest() {
+        System.out.print("Password: ");
+    }
+
+    public void printInvalidLoginCredentialsMessage() {
+        System.out.println("\nInvalid credentials. Please try again.");
     }
 }
