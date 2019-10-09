@@ -23,7 +23,7 @@ public class BibliotecaApp {
         authentication = initializeAuthentication();
         printer = new Printer();
 
-        printWelcomeMessage();
+        printer.printWelcomeMessage();
 
         while(!authentication.isLoggedIn()) {
             handleLogin();
@@ -38,18 +38,22 @@ public class BibliotecaApp {
     }
 
     private static Menu initializeMenu() {
-        ArrayList<MenuOption> options = new ArrayList<MenuOption>();
-        options.add(MenuOption.LIST_BOOKS);
-        options.add(MenuOption.LIST_MOVIES);
-        options.add(MenuOption.CHECKOUT_BOOK);
-        options.add(MenuOption.RETURN_BOOK);
-        options.add(MenuOption.CHECKOUT_MOVIE);
-        options.add(MenuOption.RETURN_MOVIE);
-        options.add(MenuOption.LIST_CHECKED_OUT_BOOKS);
-        options.add(MenuOption.LIST_CHECKED_OUT_MOVIES);
-        options.add(MenuOption.PRINT_USER_INFORMATION);
-        options.add(MenuOption.EXIT_APPLICATION);
-        Menu menu = new Menu(options);
+        ArrayList<MenuOption> options = new ArrayList<MenuOption>(
+                Arrays.asList(
+                    MenuOption.LIST_BOOKS,
+                    MenuOption.LIST_MOVIES,
+                    MenuOption.CHECKOUT_BOOK,
+                    MenuOption.RETURN_BOOK,
+                    MenuOption.CHECKOUT_MOVIE,
+                    MenuOption.RETURN_MOVIE,
+                    MenuOption.LIST_CHECKED_OUT_BOOKS,
+                    MenuOption.LIST_CHECKED_OUT_MOVIES,
+                    MenuOption.PRINT_USER_INFORMATION,
+                    MenuOption.EXIT_APPLICATION
+                )
+        );
+
+        menu = new Menu(options);
 
         return menu;
     }
@@ -63,30 +67,6 @@ public class BibliotecaApp {
         );
 
         return new Authentication(users);
-    }
-
-    private static void listBooks() {
-        library.listBooks();
-    }
-
-    private static void listMovies() {
-        library.listMovies();
-    }
-
-    private static void listCheckedOutBooks() {
-        library.listCheckedOutBooks();
-    }
-
-    private static void listCheckedOutMovies() {
-        library.listCheckedOutMovies();
-    }
-
-    private static void printUserInformation() {
-        printer.printUserInformation(authentication.getLoggedUser());
-    }
-
-    private static void printWelcomeMessage() {
-        printer.printWelcomeMessage();
     }
 
     private static void handleLogin() {
@@ -187,10 +167,10 @@ public class BibliotecaApp {
     static void processUserInput() {
         switch(menu.getSelectedOption()) {
             case MenuConstants.LIST_BOOKS_KEY:
-                listBooks();
+                library.listBooks();
                 break;
             case MenuConstants.LIST_MOVIES_KEY:
-                listMovies();
+                library.listMovies();
                 break;
             case MenuConstants.CHECKOUT_BOOK_KEY:
                 startItemCheckout(LibraryItemTypes.BOOK);
@@ -205,13 +185,13 @@ public class BibliotecaApp {
                 startItemReturn(LibraryItemTypes.MOVIE);
                 break;
             case MenuConstants.LIST_CHECKED_OUT_BOOKS_KEY:
-                listCheckedOutBooks();
+                library.listCheckedOutBooks();
                 break;
             case MenuConstants.LIST_CHECKED_OUT_MOVIES_KEY:
-                listCheckedOutMovies();
+                library.listCheckedOutMovies();
                 break;
             case MenuConstants.PRINT_USER_INFORMATION_KEY:
-                printUserInformation();
+                printer.printUserInformation(authentication.getLoggedUser());
                 break;
             case MenuConstants.EXIT_APPLICATION_KEY:
                 exitApplication();
