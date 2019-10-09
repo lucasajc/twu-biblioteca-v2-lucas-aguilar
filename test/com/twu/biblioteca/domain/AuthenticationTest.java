@@ -36,17 +36,17 @@ public class AuthenticationTest {
 
     @Test
     public void shouldLoginWhenInsertCorrectCredentials() {
-        auth.login("user1@email.com", "password123");
+        auth.login("123-1234", "password123");
 
         assertThat(auth.isLoggedIn(), is(true));
     }
 
     @Test
     public void shouldLoginWhenInsertIncorrectCredentials() {
-        auth.login("user1@email.com", "password1234");
+        auth.login("123-1232", "password1234");
         assertThat(auth.isLoggedIn(), is(false));
 
-        auth.login("userXXX@email.com", "password123");
+        auth.login("123-5678", "password123");
         assertThat(auth.isLoggedIn(), is(false));
     }
 }

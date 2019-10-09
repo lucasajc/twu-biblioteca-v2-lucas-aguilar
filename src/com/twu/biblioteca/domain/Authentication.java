@@ -19,7 +19,7 @@ public class Authentication {
         inputPassword = password;
 
         for(User user : this.users) {
-            if(user.getEmail().equals(inputUsername) && user.getPassword().equals(inputPassword)) {
+            if(user.getId().equals(inputUsername) && user.getPassword().equals(inputPassword)) {
                 loggedUser = user;
                 loggedIn = true;
             }
