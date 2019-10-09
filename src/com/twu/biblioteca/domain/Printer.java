@@ -90,7 +90,7 @@ public class Printer {
     }
 
     public void printLoginHeader() {
-        System.out.println("\n---------------- Login ----------------\n");
+        System.out.println("\n---------------- Login ---------------\n");
     }
 
     public void printLoginUsernameRequest() {
@@ -103,5 +103,14 @@ public class Printer {
 
     public void printInvalidLoginCredentialsMessage() {
         System.out.println("\nInvalid credentials. Please try again.");
+    }
+
+    public void printUserInformation(User user) {
+        System.out.println("\n----------- My information -----------");
+
+        System.out.print("\nID: "+ user.getId());
+        System.out.print("\nName: "+ user.getName());
+        System.out.print("\nE-mail: "+ user.getEmail());
+        System.out.print("\nPhone number: "+ user.getPhoneNumber() +"\n");
     }
 }
