@@ -29,7 +29,10 @@ public class LibraryTest {
 
     @Before
     public void setUp() {
-        library = new Library(new Printer());
+        library = new Library(
+                new Printer(),
+                new User("123-1234", "Example user 1", "user1@email.com", "+55 12 1234 1234", "password123")
+        );
     }
 
     @Test
@@ -87,6 +90,8 @@ public class LibraryTest {
         library.checkoutBookById(key);
 
         assertThat(library.getItems().get(key).isCheckedOut(), is(true));
+        assertThat(library.getCheckoutItems().get(key).getUser().getId(), is(library.getLoggedUser().getId()));
+        assertThat(library.getCheckoutItems().get(key).getLibraryItem().getId(), is(key));
     }
 
     @Test
@@ -97,6 +102,8 @@ public class LibraryTest {
         library.checkoutMovieById(key);
 
         assertThat(library.getItems().get(key).isCheckedOut(), is(true));
+        assertThat(library.getCheckoutItems().get(key).getUser().getId(), is(library.getLoggedUser().getId()));
+        assertThat(library.getCheckoutItems().get(key).getLibraryItem().getId(), is(key));
     }
 
     @Test
@@ -125,6 +132,36 @@ public class LibraryTest {
         library.listMovies();
 
         assertThat(outContent.toString(), not(containsString(key.toString())));
+    }
+
+    @Test
+    public void shouldListCheckedOutBooksInformation() {
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        HashMap.Entry<UUID, Book> entry = library.getBooks().entrySet().iterator().next();
+        UUID key = entry.getKey();
+
+        library.checkoutBookById(key);
+        library.listCheckedOutBooks();
+
+        assertThat(outContent.toString(), containsString(entry.getValue().getTitle()));
+        assertThat(outContent.toString(), containsString(library.getLoggedUser().getName()));
+    }
+
+    @Test
+    public void shouldListCheckedOutMoviesInformation() {
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        HashMap.Entry<UUID, Movie> entry = library.getMovies().entrySet().iterator().next();
+        UUID key = entry.getKey();
+
+        library.checkoutMovieById(key);
+        library.listCheckedOutMovies();
+
+        assertThat(outContent.toString(), containsString(entry.getValue().getName()));
+        assertThat(outContent.toString(), containsString(library.getLoggedUser().getName()));
     }
 
     @Test
@@ -182,6 +219,7 @@ public class LibraryTest {
         library.returnBookById(key);
 
         assertThat(library.getItems().get(key).isCheckedOut(), is(false));
+        assertThat(library.getCheckoutItems().get(key), is(nullValue()));
     }
 
     @Test
@@ -193,6 +231,7 @@ public class LibraryTest {
         library.returnMovieById(key);
 
         assertThat(library.getItems().get(key).isCheckedOut(), is(false));
+        assertThat(library.getCheckoutItems().get(key), is(nullValue()));
     }
 
     @Test
