@@ -127,4 +127,19 @@ public class PrinterTest {
 
         assertThat(outContent.toString(), containsString("Invalid credentials. Please try again."));
     }
+
+    @Test
+    public void shouldPrintUserInformation() {
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        User user = new User("123-1234", "Example user 1", "user1@email.com", "+55 12 1234 1234", "password123");
+
+        printer.printUserInformation(user);
+
+        assertThat(outContent.toString(), containsString(user.getId()));
+        assertThat(outContent.toString(), containsString(user.getName()));
+        assertThat(outContent.toString(), containsString(user.getEmail()));
+        assertThat(outContent.toString(), containsString(user.getPhoneNumber()));
+    }
 }
