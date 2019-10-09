@@ -9,6 +9,7 @@ import org.junit.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
@@ -18,7 +19,7 @@ public class BibliotecaAppTest {
 
     private Menu menu;
     private Library library;
-    private ArrayList<LibraryItem> libraryItemList;
+    private Authentication auth;
 
     private static final String WELCOME_MESSAGE = "Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore.\n";
     private static final String INVALID_CHECKOUT_MESSAGE = "Please select a valid ID!";
@@ -31,16 +32,32 @@ public class BibliotecaAppTest {
     }
 
     private void initializeLibrary() {
-        library = new Library(new Printer());
+        library = new Library(
+                new Printer(),
+                new User("123-1234", "Example user 1", "user1@email.com", "+55 12 1234 1234", "password123")
+        );
+    }
+
+    private void initializeUsers() {
+        ArrayList<User> users = new ArrayList<User>(
+                Arrays.asList(
+                        new User("123-1234", "Example user 1", "user1@email.com", "+55 12 1234 1234", "password123"),
+                        new User("123-5678", "Example user 2", "user2@email.com", "+55 12 1234 5678", "password321")
+                )
+        );
+
+        auth = new Authentication(users);
     }
 
     @Before
     public void setUp() {
         initializeLibrary();
         initializeMenu();
+        initializeUsers();
 
         BibliotecaApp.setLibrary(library);
         BibliotecaApp.setMenu(menu);
+        BibliotecaApp.setAuthentication(auth);
     }
 
     @Test
