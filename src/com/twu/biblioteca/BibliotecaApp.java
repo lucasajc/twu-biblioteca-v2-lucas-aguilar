@@ -1,5 +1,6 @@
 package com.twu.biblioteca;
 
+import com.twu.biblioteca.constants.LibraryItemTypes;
 import com.twu.biblioteca.domain.*;
 import com.twu.biblioteca.menu.Menu;
 import com.twu.biblioteca.menu.MenuConstants;
