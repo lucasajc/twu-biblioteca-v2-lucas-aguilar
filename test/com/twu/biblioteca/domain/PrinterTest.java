@@ -103,4 +103,28 @@ public class PrinterTest {
         assertThat(outContent.toString(), containsString("Interstellar"));
         assertThat(outContent.toString(), containsString("The Empire Strikes Back"));
     }
+
+    @Test
+    public void shouldPrintLoginRequests() {
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        printer.printLoginHeader();
+        printer.printLoginUsernameRequest();
+        printer.printLoginPasswordRequest();
+
+        assertThat(outContent.toString(), containsString("Login"));
+        assertThat(outContent.toString(), containsString("Username (e-mail): "));
+        assertThat(outContent.toString(), containsString("Password: "));
+    }
+
+    @Test
+    public void shouldPrintInvalidLoginCredentialsMessage() {
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        printer.printInvalidLoginCredentialsMessage();
+
+        assertThat(outContent.toString(), containsString("Invalid credentials. Please try again."));
+    }
 }
