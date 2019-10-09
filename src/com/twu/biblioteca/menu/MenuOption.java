@@ -7,6 +7,8 @@ public enum MenuOption {
     RETURN_BOOK(MenuConstants.RETURN_BOOK_KEY, "Return a book"),
     CHECKOUT_MOVIE(MenuConstants.CHECKOUT_MOVIE_KEY, "Checkout a movie"),
     RETURN_MOVIE(MenuConstants.RETURN_MOVIE_KEY, "Return a movie"),
+    LIST_CHECKED_OUT_BOOKS(MenuConstants.LIST_CHECKED_OUT_BOOKS_KEY, "List checked out books"),
+    LIST_CHECKED_OUT_MOVIES(MenuConstants.LIST_CHECKED_OUT_MOVIES_KEY, "List checked out movies"),
     EXIT_APPLICATION(MenuConstants.EXIT_APPLICATION_KEY, "Exit application");
 
     private int menuKey;
