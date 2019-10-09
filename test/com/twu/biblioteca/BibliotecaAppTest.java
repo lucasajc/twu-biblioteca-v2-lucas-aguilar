@@ -1,6 +1,9 @@
 package com.twu.biblioteca;
 
-import com.twu.biblioteca.domain.*;
+import com.twu.biblioteca.domain.Authentication;
+import com.twu.biblioteca.domain.Library;
+import com.twu.biblioteca.domain.Printer;
+import com.twu.biblioteca.domain.User;
 import com.twu.biblioteca.menu.Menu;
 import com.twu.biblioteca.menu.MenuOption;
 import org.junit.Before;
@@ -12,7 +15,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 public class BibliotecaAppTest {
@@ -21,7 +23,6 @@ public class BibliotecaAppTest {
     private Library library;
     private Authentication auth;
 
-    private static final String WELCOME_MESSAGE = "Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore.\n";
     private static final String INVALID_CHECKOUT_MESSAGE = "Please select a valid ID!";
 
     private void initializeMenu() {
@@ -58,16 +59,6 @@ public class BibliotecaAppTest {
         BibliotecaApp.setLibrary(library);
         BibliotecaApp.setMenu(menu);
         BibliotecaApp.setAuthentication(auth);
-    }
-
-    @Test
-    public void shouldPrintAWelcomingMessage() {
-        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outContent));
-
-        BibliotecaApp.printWelcomeMessage();
-
-        assertThat(outContent.toString(), is(WELCOME_MESSAGE));
     }
 
     @Test

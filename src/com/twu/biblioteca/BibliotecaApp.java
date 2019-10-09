@@ -85,6 +85,10 @@ public class BibliotecaApp {
         printer.printUserInformation(authentication.getLoggedUser());
     }
 
+    private static void printWelcomeMessage() {
+        printer.printWelcomeMessage();
+    }
+
     private static void handleLogin() {
         Scanner scanner = new Scanner(System.in);
         String usernameInput = "";
@@ -142,10 +146,6 @@ public class BibliotecaApp {
 
         processUserInput();
         run();
-    }
-
-    static void printWelcomeMessage() {
-        System.out.println("Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore.");
     }
 
     static void selectMenuOption(String userInput) {

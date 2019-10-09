@@ -14,6 +14,7 @@ import static org.junit.Assert.assertThat;
 public class PrinterTest {
 
     private Printer printer;
+    private static final String WELCOME_MESSAGE = "Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore.\n";
 
     @Before
     public void setUp() {
@@ -141,5 +142,15 @@ public class PrinterTest {
         assertThat(outContent.toString(), containsString(user.getName()));
         assertThat(outContent.toString(), containsString(user.getEmail()));
         assertThat(outContent.toString(), containsString(user.getPhoneNumber()));
+    }
+
+    @Test
+    public void shouldPrintAWelcomingMessage() {
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        printer.printWelcomeMessage();
+
+        assertThat(outContent.toString(), containsString(WELCOME_MESSAGE));
     }
 }
