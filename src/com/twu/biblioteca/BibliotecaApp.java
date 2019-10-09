@@ -1,28 +1,39 @@
 package com.twu.biblioteca;
 
-import com.twu.biblioteca.domain.Library;
-import com.twu.biblioteca.domain.LibraryItem;
-import com.twu.biblioteca.domain.LibraryItemTypes;
-import com.twu.biblioteca.domain.Printer;
+import com.twu.biblioteca.domain.*;
 import com.twu.biblioteca.menu.Menu;
 import com.twu.biblioteca.menu.MenuConstants;
 import com.twu.biblioteca.menu.MenuOption;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.UUID;
 
 public class BibliotecaApp {
     private static Library library;
     private static Menu menu;
+    private static Authentication authentication;
+    private static Printer printer;
 
     private static final String INVALID_CHECKOUT_MESSAGE = "Please select a valid ID!";
 
     public static void main(String[] args) {
         menu = initializeMenu();
-        library = new Library(new Printer());
+        authentication = initializeAuthentication();
+        printer = new Printer();
 
         printWelcomeMessage();
+
+        while(!authentication.isLoggedIn()) {
+            handleLogin();
+            if(!authentication.isLoggedIn()) {
+                printer.printInvalidLoginCredentialsMessage();
+            }
+        }
+
+        library = new Library(new Printer(), authentication.getLoggedUser());
+
         run();
     }
 
@@ -40,12 +51,39 @@ public class BibliotecaApp {
         return menu;
     }
 
+    private static Authentication initializeAuthentication() {
+        ArrayList<User> users = new ArrayList<User>(
+                Arrays.asList(
+                        new User("123-1234", "Example user 1", "user1@email.com", "+55 12 1234 1234", "123"),
+                        new User("123-5678", "Example user 2", "user2@email.com", "+55 12 1234 5678", "321")
+                )
+        );
+
+        return new Authentication(users);
+    }
+
     private static void listBooks() {
         library.listBooks();
     }
 
     private static void listMovies() {
         library.listMovies();
+    }
+
+    private static void handleLogin() {
+        Scanner scanner = new Scanner(System.in);
+        String usernameInput = "";
+        String passwordInput = "";
+
+        printer.printLoginHeader();
+
+        printer.printLoginUsernameRequest();
+        usernameInput = scanner.nextLine();
+
+        printer.printLoginPasswordRequest();
+        passwordInput = scanner.nextLine();
+
+        authentication.login(usernameInput, passwordInput);
     }
 
     private static void startItemCheckout(String itemType) {
@@ -162,5 +200,9 @@ public class BibliotecaApp {
 
     static void setMenu(Menu menu) {
         BibliotecaApp.menu = menu;
+    }
+
+    static void setAuthentication(Authentication authentication) {
+        BibliotecaApp.authentication = authentication;
     }
 }
