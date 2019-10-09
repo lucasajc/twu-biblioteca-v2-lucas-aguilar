@@ -1,5 +1,7 @@
 package com.twu.biblioteca.domain;
 
+import com.twu.biblioteca.constants.LibraryItemTypes;
+
 import java.util.UUID;
 
 public class Movie implements LibraryItem {

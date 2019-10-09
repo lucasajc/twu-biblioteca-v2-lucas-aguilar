@@ -1,5 +1,6 @@
 package com.twu.biblioteca.domain;
 
+import com.twu.biblioteca.constants.LibraryItemTypes;
 import org.junit.Before;
 import org.junit.Test;
 
