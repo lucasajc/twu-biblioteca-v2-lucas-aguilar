@@ -113,4 +113,8 @@ public class Printer {
         System.out.print("\nE-mail: "+ user.getEmail());
         System.out.print("\nPhone number: "+ user.getPhoneNumber() +"\n");
     }
+
+    public void printWelcomeMessage() {
+        System.out.println("Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore.");
+    }
 }
