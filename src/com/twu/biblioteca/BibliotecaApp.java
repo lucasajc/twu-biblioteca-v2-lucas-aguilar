@@ -47,6 +47,7 @@ public class BibliotecaApp {
         options.add(MenuOption.RETURN_MOVIE);
         options.add(MenuOption.LIST_CHECKED_OUT_BOOKS);
         options.add(MenuOption.LIST_CHECKED_OUT_MOVIES);
+        options.add(MenuOption.PRINT_USER_INFORMATION);
         options.add(MenuOption.EXIT_APPLICATION);
         Menu menu = new Menu(options);
 
@@ -78,6 +79,10 @@ public class BibliotecaApp {
 
     private static void listCheckedOutMovies() {
         library.listCheckedOutMovies();
+    }
+
+    private static void printUserInformation() {
+        printer.printUserInformation(authentication.getLoggedUser());
     }
 
     private static void handleLogin() {
@@ -204,6 +209,9 @@ public class BibliotecaApp {
                 break;
             case MenuConstants.LIST_CHECKED_OUT_MOVIES_KEY:
                 listCheckedOutMovies();
+                break;
+            case MenuConstants.PRINT_USER_INFORMATION_KEY:
+                printUserInformation();
                 break;
             case MenuConstants.EXIT_APPLICATION_KEY:
                 exitApplication();
